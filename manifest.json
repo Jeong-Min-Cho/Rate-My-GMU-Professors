@@ -1,0 +1,18 @@
+{
+  "name": "Rate My GMU Professors",
+  "description": "Display the ratings of each George Mason University professor for GMU Patriot Web!",
+  "homepage_url": "https://github.com/Jeong-Min-Cho/Rate-My-GMU-Professors",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "execute.js will run (watch the Chrome DevTools' console)"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "scripting", "activeTab", "background"],
+  "host_permissions": [
+    "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+    "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+  ]
+}
