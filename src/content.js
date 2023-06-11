@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
 
   observer.observe(document.body, { childList: true, subtree: true });
 });
+
 function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
@@ -40,10 +41,82 @@ function startObserver() {
       }
     }
 
-    const splitStrings = currentEmailArray.innerText.split("\n");
+    // Select all 'a' elements that have class 'email'
+    const emailElements = currentEmailArray.querySelectorAll("a.email");
 
-    // Use Array.prototype.forEach for brevity and clarity
-    splitStrings.forEach(processName);
+    // <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-6">
+
+    emailElements.forEach((emailElement) => {
+      const professorname = emailElement.textContent;
+      processName(professorname);
+
+      // Create a new div, set its innerHTML to the emailElement's outerHTML
+      const newDiv = document.createElement("div");
+      newDiv.id = "ratemygmuprofessors";
+      newDiv.className =
+        "p-2 flex items-center rounded-lg shadow bg-white border-2 border-gray-100 hover:border-gray-200";
+      // newDiv.innerHTML =
+      //   emailElement.outerHTML +
+      //   (emailElement.nextSibling ? emailElement.nextSibling.nodeValue : "");
+
+      // emailElement.outerHTML.a.href
+      // within above div, create a div to store the professor's name
+      const professorRatingDiv = document.createElement("div");
+      professorRatingDiv.id = "ratemygmuprofessors-name";
+      professorRatingDiv.innerText = "🔥 5.0 ";
+      professorRatingDiv.className =
+        "bg-green-100 text-green-800 text-sm font-medium px-2.5 inline-flex items-center py-0.5 rounded mr-2";
+      newDiv.appendChild(professorRatingDiv);
+
+      // <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Default</span>
+
+      const primaryMarkDiv = document.createElement("div");
+      primaryMarkDiv.id = "ratemygmuprofessors-name";
+      primaryMarkDiv.innerText = "Primary";
+      primaryMarkDiv.className =
+        "bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full";
+      newDiv.appendChild(primaryMarkDiv);
+
+      const professorNameDiv = document.createElement("div");
+      professorNameDiv.id = "ratemygmuprofessors-name";
+      professorNameDiv.innerText = professorname;
+      professorNameDiv.className =
+        "text-xs font-medium inline-flex items-center py-0.5 rounded mr-2";
+      newDiv.appendChild(professorNameDiv);
+
+      const emailButton = document.createElement("div");
+      // emailButton.id = "ratemygmuprofessors-email";
+      // emailButton.innerText = "📧";
+      // emailButton.className =
+      //   "w-25 h-25 ml-2 font-medium inline-flex items-center py-0.5 rounded hover:scale-125 transform transition-all duration-100 ease-in-out";
+
+      emailButton.innerHTML = `
+      <button type="button" class="relative inline-flex items-center p-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+  <svg class="w-3 h-3" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+</button>`;
+
+      newDiv.appendChild(emailButton);
+
+      // Replace the emailElement with the newDiv
+      emailElement.parentNode.replaceChild(newDiv, emailElement);
+    });
+
+    // // Create a div to mark that the script has already executed
+    // const div = document.createElement("div");
+    // div.id = "ratemygmuprofessors";
+    // div.className = "p-2 flex items-center";
+    // currentEmailArray.appendChild(div);
+
+    // // within above div, create a div to store the professor's name
+    // const professorNameDiv = document.createElement("div");
+    // professorNameDiv.id = "ratemygmuprofessors-name";
+    // professorNameDiv.innerText = "🔥 5.0";
+    // professorNameDiv.className =
+    //   "bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 inline-flex items-center py-0.5 rounded dark:bg-green-200 dark:text-green-900";
+    // div.appendChild(professorNameDiv);
+
+    // currentEmailArray.className =
+    //   "bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 inline-flex items-center py-0.5 rounded dark:bg-green-200 dark:text-green-900";
   }
 
   // Setup the observer
@@ -57,6 +130,64 @@ function startObserver() {
     const emailArray = Array.from(query);
 
     emailArray.forEach(processInstructor);
+
+    // // Select the table row
+    // let tableRow = document.querySelector("thead tr");
+
+    // // Create a new table header
+    // let newTH = document.createElement("th");
+    // newTH.scope = "col";
+    // newTH.setAttribute("data-sort-direction", "disabled");
+    // newTH.className = "sort-disabled meeting-time-col ui-state-default";
+    // newTH.setAttribute("data-property", "newColumn");
+    // newTH.setAttribute("xe-field", "newColumn");
+    // newTH.style.width = "15%";
+    // newTH.setAttribute("data-hide", "phone");
+    // newTH.textContent = "New Column"; // Name your new column
+
+    // // <div class="column-visibility-menu" tabindex="0" title="Columns" style="height: 39px; top: 0px; left: 1454.5px;"></div>
+
+    // // create a div
+    // let newDiv = document.createElement("div");
+    // newDiv.className = "column-visibility-menu";
+    // newDiv.setAttribute("tabindex", "0");
+    // newDiv.setAttribute("title", "Columns");
+    // newDiv.style.height = "39px";
+    // newDiv.style.top = "0px";
+    // newDiv.style.left = "1454.5px";
+
+    // // append the div to the new table header
+    // newTH.appendChild(newDiv);
+
+    // // Insert the new header after the 8th column (Instructor column)
+    // tableRow.insertBefore(newTH, tableRow.children[8].nextSibling);
+
+    // // Select the table body
+    // let tableBody = document.querySelector("tbody");
+
+    // // Iterate through each table row
+    // tableBody.querySelectorAll("tr").forEach((row) => {
+    //   // Create a new table cell
+    //   let newTD = document.createElement("td");
+
+    //   // Set the properties
+    //   newTD.setAttribute("data-id", "523088"); // Adjust this as per your requirements
+    //   newTD.setAttribute("data-property", "newColumn");
+    //   newTD.setAttribute("xe-field", "newColumn");
+    //   newTD.className = "readonly";
+    //   newTD.style.width = "15%";
+
+    //   // You can set text content for the cell as well
+    //   newTD.textContent = "Placeholder"; // Placeholder text
+
+    //   // Append the new cell to the row
+    //   row.insertBefore(newTD, row.children[8].nextSibling);
+    // });
+
+    // var table = document.querySelector("table"); // Adjust this as needed to select your table
+    // table.classList.add("grid");
+
+    observer.disconnect();
   });
 
   observer.observe(document, {
