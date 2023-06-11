@@ -1,4 +1,4 @@
-const QueryProfessorInfo = `
+const QueryProfessorData = `
 query ($id: ID!) {
     node(id: $id) {
         ... on Teacher {
@@ -16,4 +16,4 @@ query ($id: ID!) {
 }
 `;
 
-module.exports = { QueryProfessorInfo };
+module.exports = { QueryProfessorData };

@@ -18,8 +18,7 @@ function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
 
-  function processInstructor(currentEmailArray) {
-    // Avoid unnecessary nesting by checking condition early
+  async function processInstructor(currentEmailArray) {
     if (
       !currentEmailArray ||
       !currentEmailArray.innerText ||
@@ -28,45 +27,76 @@ function startObserver() {
       return;
     }
 
-    // Abstract repeated logic into a function
-    function processName(professorname) {
-      if (professorname) {
-        const fullName = professorname.replace(/\(.*?\)/, "");
-        console.log("fullName", fullName);
-        // GetProfessorInfo(currentEmailArray, fullName, userSettings, false);
-        // convert fullName which comes last name first name to first name last name
-
-        console.log(
-          "converted",
-          convertLastNameFirstNameToFirstNameLastName(fullName)
-        );
+    async function processName(professorname) {
+      if (!professorname) {
+        return Promise.reject("Missing professor name");
       }
+
+      const fullName = professorname.replace(/\(.*?\)/, "");
+      const convertedName =
+        convertLastNameFirstNameToFirstNameLastName(fullName);
+
+      console.log("fullName", fullName);
+      console.log("converted", convertedName);
+
+      const id = await fetchProfIDFromName(fullName);
+
+      // if id is null, return null
+
+      if (!id) {
+        return {
+          avgDifficulty: -1,
+          avgRating: -1,
+          department: "N/A",
+          firstName: "N/A",
+          id: "N/A",
+          lastName: "N/A",
+          legacyId: -1,
+          numRatings: -1,
+          wouldTakeAgainPercent: -1,
+        };
+      }
+
+      const res = await fetchProfReviewFromID(id);
+
+      console.log("res", res);
+
+      return res;
     }
 
-    // Select all 'a' elements that have class 'email'
     const emailElements = currentEmailArray.querySelectorAll("a.email");
 
-    // <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-6">
+    function getEmailHref(emailElement) {
+      return emailElement.getAttribute("href").replace("mailto:", "");
+    }
 
-    const professorObjects = [];
+    const professorPromises = Array.from(emailElements).map(
+      async (emailElement) => {
+        const professorname = emailElement.textContent;
+        const profObj = await processName(professorname);
 
-    emailElements.forEach((emailElement) => {
-      const professorname = emailElement.textContent;
-      processName(professorname);
+        console.log("profObj", profObj);
 
-      professorObjects.push({
-        name: professorname,
-        email: emailElement.getAttribute("href").replace("mailto:", ""),
-        rating: "8.7",
-        // only first preofessor is primary
-        isPrimary: professorObjects.length === 0,
-      });
-    });
+        return {
+          name: professorname,
+          email: getEmailHref(emailElement),
+          rating: parseFloat(profObj.avgRating).toFixed(1),
+          isPrimary: false, // This will be set properly below
+        };
+      }
+    );
+
+    const professorObjects = await Promise.all(professorPromises);
+
+    // Set isPrimary for the first professor
+    if (professorObjects.length > 0) {
+      professorObjects[0].isPrimary = true;
+    }
 
     const newDiv = document.createElement("div");
     newDiv.id = "ratemygmuprofessors";
     newDiv.innerHTML = ProfessorList(professorObjects);
-    // replace the currentEmailArray with the newDiv
+
     currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
   }
 
@@ -104,6 +134,22 @@ async function fetchProfIDFromName(name) {
   }
 }
 
+async function fetchProfReviewFromID(ID) {
+  if (ID === null) {
+    return null;
+  }
+  try {
+    let response = await sendMessage({
+      contentScriptQuery: "queryProfData",
+      profID: ID,
+    });
+    let profData = response.data.node;
+    return profData;
+  } catch (error) {
+    return null;
+  }
+}
+
 function sendMessage(message) {
   return new Promise((resolve, _) => {
     chrome.runtime.sendMessage(message, (res) => {
@@ -114,7 +160,11 @@ function sendMessage(message) {
 
 console.log("is here");
 
-fetchProfIDFromName("Kevin Andrea").then((res) => console.log("fetch", res));
+fetchProfIDFromName("Kevin Andrea").then((res) => {
+  fetchProfReviewFromID(res).then((res2) => {
+    console.log("fetchProfReviewFromID", res2);
+  });
+});
 
 // // To find out any mutation
 // MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
