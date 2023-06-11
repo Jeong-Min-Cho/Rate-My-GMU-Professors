@@ -82,62 +82,6 @@ function startObserver() {
 
     emailArray.forEach(processInstructor);
 
-    // // Select the table row
-    // let tableRow = document.querySelector("thead tr");
-
-    // // Create a new table header
-    // let newTH = document.createElement("th");
-    // newTH.scope = "col";
-    // newTH.setAttribute("data-sort-direction", "disabled");
-    // newTH.className = "sort-disabled meeting-time-col ui-state-default";
-    // newTH.setAttribute("data-property", "newColumn");
-    // newTH.setAttribute("xe-field", "newColumn");
-    // newTH.style.width = "15%";
-    // newTH.setAttribute("data-hide", "phone");
-    // newTH.textContent = "New Column"; // Name your new column
-
-    // // <div class="column-visibility-menu" tabindex="0" title="Columns" style="height: 39px; top: 0px; left: 1454.5px;"></div>
-
-    // // create a div
-    // let newDiv = document.createElement("div");
-    // newDiv.className = "column-visibility-menu";
-    // newDiv.setAttribute("tabindex", "0");
-    // newDiv.setAttribute("title", "Columns");
-    // newDiv.style.height = "39px";
-    // newDiv.style.top = "0px";
-    // newDiv.style.left = "1454.5px";
-
-    // // append the div to the new table header
-    // newTH.appendChild(newDiv);
-
-    // // Insert the new header after the 8th column (Instructor column)
-    // tableRow.insertBefore(newTH, tableRow.children[8].nextSibling);
-
-    // // Select the table body
-    // let tableBody = document.querySelector("tbody");
-
-    // // Iterate through each table row
-    // tableBody.querySelectorAll("tr").forEach((row) => {
-    //   // Create a new table cell
-    //   let newTD = document.createElement("td");
-
-    //   // Set the properties
-    //   newTD.setAttribute("data-id", "523088"); // Adjust this as per your requirements
-    //   newTD.setAttribute("data-property", "newColumn");
-    //   newTD.setAttribute("xe-field", "newColumn");
-    //   newTD.className = "readonly";
-    //   newTD.style.width = "15%";
-
-    //   // You can set text content for the cell as well
-    //   newTD.textContent = "Placeholder"; // Placeholder text
-
-    //   // Append the new cell to the row
-    //   row.insertBefore(newTD, row.children[8].nextSibling);
-    // });
-
-    // var table = document.querySelector("table"); // Adjust this as needed to select your table
-    // table.classList.add("grid");
-
     observer.disconnect();
   });
 
