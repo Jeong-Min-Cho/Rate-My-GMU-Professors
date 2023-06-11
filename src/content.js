@@ -1,6 +1,8 @@
 import checkExecution from "./utils/checkExecution";
 import convertLastNameFirstNameToFirstNameLastName from "./utils/convertLastNameFirstNameToFirstNameLastName.js";
 
+import ProfessorList from "./components/ProfessorList";
+
 window.addEventListener("load", function () {
   const observer = new MutationObserver((mutationsList, observer) => {
     if (document.getElementsByClassName("results-out-of").length > 0) {
@@ -11,6 +13,7 @@ window.addEventListener("load", function () {
 
   observer.observe(document.body, { childList: true, subtree: true });
 });
+
 function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
@@ -40,10 +43,31 @@ function startObserver() {
       }
     }
 
-    const splitStrings = currentEmailArray.innerText.split("\n");
+    // Select all 'a' elements that have class 'email'
+    const emailElements = currentEmailArray.querySelectorAll("a.email");
 
-    // Use Array.prototype.forEach for brevity and clarity
-    splitStrings.forEach(processName);
+    // <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-6">
+
+    const professorObjects = [];
+
+    emailElements.forEach((emailElement) => {
+      const professorname = emailElement.textContent;
+      processName(professorname);
+
+      professorObjects.push({
+        name: professorname,
+        email: emailElement.getAttribute("href").replace("mailto:", ""),
+        rating: "8.7",
+        // only first preofessor is primary
+        isPrimary: professorObjects.length === 0,
+      });
+    });
+
+    const newDiv = document.createElement("div");
+    newDiv.id = "ratemygmuprofessors";
+    newDiv.innerHTML = ProfessorList(professorObjects);
+    // replace the currentEmailArray with the newDiv
+    currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
   }
 
   // Setup the observer
@@ -57,6 +81,8 @@ function startObserver() {
     const emailArray = Array.from(query);
 
     emailArray.forEach(processInstructor);
+
+    observer.disconnect();
   });
 
   observer.observe(document, {
