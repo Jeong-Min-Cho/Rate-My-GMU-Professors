@@ -23,7 +23,7 @@
         "https://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
         "https://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
       ],
-      "js": ["src/content.js"]
+      "js": ["dist/content.bundle.js"]
     }
   ],
   "permissions": ["tabs", "scripting", "activeTab", "background"],

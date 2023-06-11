@@ -1,3 +1,6 @@
+import checkExecution from "./utils/checkExecution";
+import convertLastNameFirstNameToFirstNameLastName from "./utils/convertLastNameFirstNameToFirstNameLastName.js";
+
 window.addEventListener("load", function () {
   const observer = new MutationObserver((mutationsList, observer) => {
     if (document.getElementsByClassName("results-out-of").length > 0) {
@@ -29,11 +32,11 @@ function startObserver() {
         console.log("fullName", fullName);
         // GetProfessorInfo(currentEmailArray, fullName, userSettings, false);
         // convert fullName which comes last name first name to first name last name
-        const splitName = fullName.split(",");
-        const firstName = splitName[1].trim();
-        const lastName = splitName[0].trim();
-        const name = firstName + " " + lastName;
-        console.log("name", name);
+
+        console.log(
+          "converted",
+          convertLastNameFirstNameToFirstNameLastName(fullName)
+        );
       }
     }
 
@@ -47,7 +50,8 @@ function startObserver() {
   const observer = new MutationObserver(async function (mutations, observer) {
     // const userSettings = await GetUserSettings();
 
-    // if (CheckExecution()) return;
+    // if already executed, disconnect the observer
+    if (checkExecution()) return;
 
     const query = document.querySelectorAll(`[data-property*="instructor"]`);
     const emailArray = Array.from(query);
