@@ -10,6 +10,22 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+        "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+      ],
+      "css": ["src/styles.css"]
+    },
+    {
+      "matches": [
+        "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+        "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+      ],
+      "js": ["src/content.js"]
+    }
+  ],
   "permissions": ["tabs", "scripting", "activeTab", "background"],
   "host_permissions": [
     "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
