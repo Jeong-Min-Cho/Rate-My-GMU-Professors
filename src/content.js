@@ -1,6 +1,8 @@
 import checkExecution from "./utils/checkExecution";
 import convertLastNameFirstNameToFirstNameLastName from "./utils/convertLastNameFirstNameToFirstNameLastName.js";
 
+import ProfessorList from "./components/ProfessorList";
+
 window.addEventListener("load", function () {
   const observer = new MutationObserver((mutationsList, observer) => {
     if (document.getElementsByClassName("results-out-of").length > 0) {
@@ -46,77 +48,26 @@ function startObserver() {
 
     // <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-6">
 
+    const professorObjects = [];
+
     emailElements.forEach((emailElement) => {
       const professorname = emailElement.textContent;
       processName(professorname);
 
-      // Create a new div, set its innerHTML to the emailElement's outerHTML
-      const newDiv = document.createElement("div");
-      newDiv.id = "ratemygmuprofessors";
-      newDiv.className =
-        "p-2 flex items-center rounded-lg shadow bg-white border-2 border-gray-100 hover:border-gray-200";
-      // newDiv.innerHTML =
-      //   emailElement.outerHTML +
-      //   (emailElement.nextSibling ? emailElement.nextSibling.nodeValue : "");
-
-      // emailElement.outerHTML.a.href
-      // within above div, create a div to store the professor's name
-      const professorRatingDiv = document.createElement("div");
-      professorRatingDiv.id = "ratemygmuprofessors-name";
-      professorRatingDiv.innerText = "🔥 5.0 ";
-      professorRatingDiv.className =
-        "bg-green-100 text-green-800 text-sm font-medium px-2.5 inline-flex items-center py-0.5 rounded mr-2";
-      newDiv.appendChild(professorRatingDiv);
-
-      // <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Default</span>
-
-      const primaryMarkDiv = document.createElement("div");
-      primaryMarkDiv.id = "ratemygmuprofessors-name";
-      primaryMarkDiv.innerText = "Primary";
-      primaryMarkDiv.className =
-        "bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full";
-      newDiv.appendChild(primaryMarkDiv);
-
-      const professorNameDiv = document.createElement("div");
-      professorNameDiv.id = "ratemygmuprofessors-name";
-      professorNameDiv.innerText = professorname;
-      professorNameDiv.className =
-        "text-xs font-medium inline-flex items-center py-0.5 rounded mr-2";
-      newDiv.appendChild(professorNameDiv);
-
-      const emailButton = document.createElement("div");
-      // emailButton.id = "ratemygmuprofessors-email";
-      // emailButton.innerText = "📧";
-      // emailButton.className =
-      //   "w-25 h-25 ml-2 font-medium inline-flex items-center py-0.5 rounded hover:scale-125 transform transition-all duration-100 ease-in-out";
-
-      emailButton.innerHTML = `
-      <button type="button" class="relative inline-flex items-center p-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
-  <svg class="w-3 h-3" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
-</button>`;
-
-      newDiv.appendChild(emailButton);
-
-      // Replace the emailElement with the newDiv
-      emailElement.parentNode.replaceChild(newDiv, emailElement);
+      professorObjects.push({
+        name: professorname,
+        email: emailElement.getAttribute("href").replace("mailto:", ""),
+        rating: "8.7",
+        // only first preofessor is primary
+        isPrimary: professorObjects.length === 0,
+      });
     });
 
-    // // Create a div to mark that the script has already executed
-    // const div = document.createElement("div");
-    // div.id = "ratemygmuprofessors";
-    // div.className = "p-2 flex items-center";
-    // currentEmailArray.appendChild(div);
-
-    // // within above div, create a div to store the professor's name
-    // const professorNameDiv = document.createElement("div");
-    // professorNameDiv.id = "ratemygmuprofessors-name";
-    // professorNameDiv.innerText = "🔥 5.0";
-    // professorNameDiv.className =
-    //   "bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 inline-flex items-center py-0.5 rounded dark:bg-green-200 dark:text-green-900";
-    // div.appendChild(professorNameDiv);
-
-    // currentEmailArray.className =
-    //   "bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 inline-flex items-center py-0.5 rounded dark:bg-green-200 dark:text-green-900";
+    const newDiv = document.createElement("div");
+    newDiv.id = "ratemygmuprofessors";
+    newDiv.innerHTML = ProfessorList(professorObjects);
+    // replace the currentEmailArray with the newDiv
+    currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
   }
 
   // Setup the observer
