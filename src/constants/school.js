@@ -1,4 +1,4 @@
-export const SCHOOL_IDS = [
+module.exports = SCHOOL_IDS = [
   // Fairfax Compus
   "U2Nob29sLTM1Mg==",
   // Prince William Campus

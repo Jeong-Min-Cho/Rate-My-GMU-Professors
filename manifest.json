@@ -8,7 +8,8 @@
     "default_title": "execute.js will run (watch the Chrome DevTools' console)"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "dist/background.bundle.js",
+    "persistent": false
   },
   "content_scripts": [
     {

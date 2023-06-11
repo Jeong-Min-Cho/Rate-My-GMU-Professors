@@ -1,6 +1,7 @@
-import { AUTHORIZATION_TOKEN, SCHOOL_IDS } from "./Constants";
+import AUTHORIZATION_TOKEN from "../constants/auth";
+import SCHOOL_IDS from "../constants/school";
 
-export const getProfessorID = async (profName) => {
+module.exports = getProfessorID = async (profName) => {
   const requests = SCHOOL_IDS.map(async (SCHOOL_ID) => {
     try {
       const rawResponse = await fetch(
