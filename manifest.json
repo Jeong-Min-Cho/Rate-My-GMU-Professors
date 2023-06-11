@@ -8,28 +8,28 @@
     "default_title": "execute.js will run (watch the Chrome DevTools' console)"
   },
   "background": {
-    "service_worker": "dist/background.bundle.js",
-    "persistent": false
+    "service_worker": "dist/background.bundle.js"
   },
   "content_scripts": [
     {
       "matches": [
-        "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
-        "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+        "https://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+        "https://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
       ],
       "css": ["src/styles.css"]
     },
     {
       "matches": [
-        "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
-        "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+        "https://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+        "https://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
       ],
       "js": ["src/content.js"]
     }
   ],
   "permissions": ["tabs", "scripting", "activeTab", "background"],
   "host_permissions": [
-    "*://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
-    "*://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse"
+    "https://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
+    "https://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse",
+    "https://www.ratemyprofessors.com/*"
   ]
 }

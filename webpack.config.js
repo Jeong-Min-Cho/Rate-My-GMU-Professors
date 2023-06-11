@@ -22,4 +22,5 @@ module.exports = {
   },
   target: "web",
   mode: "development",
+  devtool: "cheap-module-source-map",
 };

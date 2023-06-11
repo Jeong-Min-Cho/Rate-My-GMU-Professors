@@ -1,4 +1,4 @@
-import { getProfessorID } from "./src/utils/GetProfessorID";
+import getProfessorID from "./src/utils/getProfessorID";
 
 console.log("This is the background page.");
 console.log("Put the background scripts here.");
@@ -6,7 +6,7 @@ console.log("Put the background scripts here.");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.contentScriptQuery) {
     case "queryProfID":
-      //   getProfessorID(request.profName, sendResponse);
+      getProfessorID(request.profName, sendResponse);
       return true;
 
     // case "queryProfData":

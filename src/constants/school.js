@@ -1,4 +1,4 @@
-module.exports = SCHOOL_IDS = [
+const SCHOOL_IDS = [
   // Fairfax Compus
   "U2Nob29sLTM1Mg==",
   // Prince William Campus
@@ -10,3 +10,5 @@ module.exports = SCHOOL_IDS = [
   // Arlington Campus (Law School)
   "U2Nob29sLTU3MTk=",
 ];
+
+module.exports = { SCHOOL_IDS };

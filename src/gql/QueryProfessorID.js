@@ -1,4 +1,4 @@
-export const GET_PROFESSOR_ID = `
+const QueryProfessorID = `
 query ($query: TeacherSearchQuery!) {
     newSearch {
         teachers(query: $query) {
@@ -11,3 +11,5 @@ query ($query: TeacherSearchQuery!) {
     }
 }
 `;
+
+module.exports = { QueryProfessorID };

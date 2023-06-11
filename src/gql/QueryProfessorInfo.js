@@ -1,4 +1,4 @@
-export const GET_PROFESSOR_INFO = `
+const QueryProfessorInfo = `
 query ($id: ID!) {
     node(id: $id) {
         ... on Teacher {
@@ -15,3 +15,5 @@ query ($id: ID!) {
     }
 }
 `;
+
+module.exports = { QueryProfessorInfo };

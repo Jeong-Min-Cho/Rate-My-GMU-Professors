@@ -1,7 +1,9 @@
-import AUTHORIZATION_TOKEN from "../constants/auth";
-import SCHOOL_IDS from "../constants/school";
+import { AUTHORIZATION_TOKEN } from "../constants/auth.js";
+import { SCHOOL_IDS } from "../constants/school.js";
 
-module.exports = getProfessorID = async (profName) => {
+import { QueryProfessorID } from "../gql/QueryProfessorID.js";
+
+async function getProfessorID(profName) {
   const requests = SCHOOL_IDS.map(async (SCHOOL_ID) => {
     try {
       const rawResponse = await fetch(
@@ -12,7 +14,7 @@ module.exports = getProfessorID = async (profName) => {
             Authorization: AUTHORIZATION_TOKEN,
           },
           body: JSON.stringify({
-            query: PROFESSOR_ID,
+            query: QueryProfessorID,
             variables: {
               query: { text: profName, schoolID: SCHOOL_ID },
             },
@@ -20,7 +22,11 @@ module.exports = getProfessorID = async (profName) => {
         }
       );
 
+      console.log("rawResponse", rawResponse);
+
       const jsonResponse = await rawResponse.json();
+
+      console.log("jsonResponse", jsonResponse);
 
       // Destructure to get the length of teachers
       const {
@@ -42,14 +48,23 @@ module.exports = getProfessorID = async (profName) => {
   });
 
   const results = await Promise.allSettled(requests);
+
+  console.log("results", results);
   // Filter out null results and return the first non-null result
   const validResults = results.filter(
-    (result) => result.status === "fulfilled" && result.value !== null
+    (result) =>
+      result.status === "fulfilled" &&
+      result.value !== null &&
+      result.value !== undefined
   );
+
+  console.log("validResults", validResults);
 
   if (validResults.length > 0) {
     return validResults[0].value;
   } else {
     return null; // return null or an appropriate default value when no valid results found
   }
-};
+}
+
+export default getProfessorID;
