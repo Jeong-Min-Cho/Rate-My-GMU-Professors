@@ -18,8 +18,7 @@ function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
 
-  function processInstructor(currentEmailArray) {
-    // Avoid unnecessary nesting by checking condition early
+  async function processInstructor(currentEmailArray) {
     if (
       !currentEmailArray ||
       !currentEmailArray.innerText ||
@@ -28,45 +27,66 @@ function startObserver() {
       return;
     }
 
-    // Abstract repeated logic into a function
-    function processName(professorname) {
-      if (professorname) {
-        const fullName = professorname.replace(/\(.*?\)/, "");
-        console.log("fullName", fullName);
-        // GetProfessorInfo(currentEmailArray, fullName, userSettings, false);
-        // convert fullName which comes last name first name to first name last name
-
-        console.log(
-          "converted",
-          convertLastNameFirstNameToFirstNameLastName(fullName)
-        );
+    async function processName(professorname) {
+      if (!professorname) {
+        return Promise.reject("Missing professor name");
       }
+
+      const fullName = professorname.replace(/\(.*?\)/, "");
+      const convertedName =
+        convertLastNameFirstNameToFirstNameLastName(fullName);
+
+      console.log("fullName", fullName);
+      console.log("converted", convertedName);
+
+      const id = await fetchProfIDFromName(fullName);
+
+      const res = await fetchProfReviewFromID(id);
+
+      console.log("res", res);
+
+      return res;
     }
 
-    // Select all 'a' elements that have class 'email'
     const emailElements = currentEmailArray.querySelectorAll("a.email");
 
-    // <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-6">
+    function getEmailHref(emailElement) {
+      return emailElement.getAttribute("href").replace("mailto:", "");
+    }
 
-    const professorObjects = [];
+    const professorPromises = Array.from(emailElements).map(
+      async (emailElement) => {
+        const professorname = emailElement.textContent;
+        console.log("professorname", professorname);
+        const profObj = await processName(professorname);
 
-    emailElements.forEach((emailElement) => {
-      const professorname = emailElement.textContent;
-      processName(professorname);
+        // Check if the nextSibling of the <a> tag contains '(Primary)'
+        const isPrimary =
+          emailElement.nextSibling &&
+          emailElement.nextSibling.nodeType === 3 && // check if it's a text node
+          emailElement.nextSibling.textContent.includes("(Primary)");
 
-      professorObjects.push({
-        name: professorname,
-        email: emailElement.getAttribute("href").replace("mailto:", ""),
-        rating: "8.7",
-        // only first preofessor is primary
-        isPrimary: professorObjects.length === 0,
-      });
-    });
+        console.log("profObj", profObj);
+
+        return {
+          name: professorname,
+          email: getEmailHref(emailElement),
+          rating: parseFloat(profObj.avgRating).toFixed(1),
+          isPrimary: isPrimary, // This will be set properly below
+          numRatings: profObj.numRatings,
+          difficulty: parseFloat(profObj.avgDifficulty).toFixed(1),
+          department: profObj.department,
+          wouldTakeAgainPercent: profObj.wouldTakeAgainPercent,
+        };
+      }
+    );
+
+    const professorObjects = await Promise.all(professorPromises);
 
     const newDiv = document.createElement("div");
     newDiv.id = "ratemygmuprofessors";
     newDiv.innerHTML = ProfessorList(professorObjects);
-    // replace the currentEmailArray with the newDiv
+
     currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
   }
 
@@ -82,7 +102,7 @@ function startObserver() {
 
     emailArray.forEach(processInstructor);
 
-    observer.disconnect();
+    // observer.disconnect();
   });
 
   observer.observe(document, {
@@ -91,6 +111,18 @@ function startObserver() {
   });
 }
 
+const EmptyProfessorObject = {
+  avgDifficulty: -1,
+  avgRating: -1,
+  department: "N/A",
+  firstName: "N/A",
+  id: null,
+  lastName: "N/A",
+  legacyId: -1,
+  numRatings: -1,
+  wouldTakeAgainPercent: -1,
+};
+
 async function fetchProfIDFromName(name) {
   try {
     let response = await sendMessage({
@@ -98,9 +130,30 @@ async function fetchProfIDFromName(name) {
       profName: name,
     });
     let profID = response.data.newSearch.teachers.edges[0].node.id;
-    return profID;
+    return profID ? profID : EmptyProfessorObject;
   } catch (error) {
-    return null;
+    return EmptyProfessorObject;
+  }
+}
+
+async function fetchProfReviewFromID(ID) {
+  if (ID === null) {
+    return EmptyProfessorObject;
+  }
+  try {
+    let response = await sendMessage({
+      contentScriptQuery: "queryProfData",
+      profID: ID,
+    });
+    let profData = response.data.node;
+    // No reviews
+    if (profData && profData.numRatings === 0) {
+      return EmptyProfessorObject;
+    }
+
+    return profData ? profData : EmptyProfessorObject;
+  } catch (error) {
+    return EmptyProfessorObject;
   }
 }
 
@@ -114,7 +167,11 @@ function sendMessage(message) {
 
 console.log("is here");
 
-fetchProfIDFromName("Kevin Andrea").then((res) => console.log("fetch", res));
+fetchProfIDFromName("Kevin Andrea").then((res) => {
+  fetchProfReviewFromID(res).then((res2) => {
+    console.log("fetchProfReviewFromID", res2);
+  });
+});
 
 // // To find out any mutation
 // MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
