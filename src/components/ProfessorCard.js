@@ -1,12 +1,12 @@
 function getRatingColorClass(rating) {
   if (rating >= 5) {
-    return "bg-blue-100 text-blue-800";
+    return "bg-gold-100 text-white shiny";
   }
   if (rating >= 3.5) {
     return "bg-green-100 text-green-800";
   }
   if (rating >= 2.5) {
-    return "bg-yellow-100 text-yellow-800";
+    return "bg-orange-100 text-orange-800";
   }
   if (rating == -1) {
     return "bg-gray-100 text-gray-800";
@@ -19,12 +19,15 @@ const ProfessorCard = (professor) => {
   return `
     <li class="py-3 sm:py-4">
       <div class="flex items-center space-x-3">
-        <div class="flex-shrink-0">
+        <div class="relative inline-flex flex-shrink-0">
           <p class="${getRatingColorClass(
             professor.rating
           )} text-sm font-semibold inline-flex items-center p-1.5 rounded ">
         ${professor.rating == -1 ? "No Data" : professor.rating}
+        <div class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-gray-500 border-2 border-white rounded-full -top-2 -right-2">?</div>
+
           </p>
+          
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-semibold text-gray-900 truncate ">
@@ -40,6 +43,7 @@ const ProfessorCard = (professor) => {
       </span>`
             : ""
         }
+        
       </div>
     </li>
   `;

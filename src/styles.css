@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.shiny {
+  background: linear-gradient(120deg, #ffd700, #ffffff, #ffd700, #ffffff);
+  background-size: 200% auto;
+  color: #000;
+  animation: shine 1s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}

@@ -41,22 +41,6 @@ function startObserver() {
 
       const id = await fetchProfIDFromName(fullName);
 
-      // if id is null, return null
-
-      if (!id) {
-        return {
-          avgDifficulty: -1,
-          avgRating: -1,
-          department: "N/A",
-          firstName: "N/A",
-          id: "N/A",
-          lastName: "N/A",
-          legacyId: -1,
-          numRatings: -1,
-          wouldTakeAgainPercent: -1,
-        };
-      }
-
       const res = await fetchProfReviewFromID(id);
 
       console.log("res", res);
@@ -73,7 +57,14 @@ function startObserver() {
     const professorPromises = Array.from(emailElements).map(
       async (emailElement) => {
         const professorname = emailElement.textContent;
+        console.log("professorname", professorname);
         const profObj = await processName(professorname);
+
+        // Check if the nextSibling of the <a> tag contains '(Primary)'
+        const isPrimary =
+          emailElement.nextSibling &&
+          emailElement.nextSibling.nodeType === 3 && // check if it's a text node
+          emailElement.nextSibling.textContent.includes("(Primary)");
 
         console.log("profObj", profObj);
 
@@ -81,17 +72,12 @@ function startObserver() {
           name: professorname,
           email: getEmailHref(emailElement),
           rating: parseFloat(profObj.avgRating).toFixed(1),
-          isPrimary: false, // This will be set properly below
+          isPrimary: isPrimary, // This will be set properly below
         };
       }
     );
 
     const professorObjects = await Promise.all(professorPromises);
-
-    // Set isPrimary for the first professor
-    if (professorObjects.length > 0) {
-      professorObjects[0].isPrimary = true;
-    }
 
     const newDiv = document.createElement("div");
     newDiv.id = "ratemygmuprofessors";
@@ -112,7 +98,7 @@ function startObserver() {
 
     emailArray.forEach(processInstructor);
 
-    observer.disconnect();
+    // observer.disconnect();
   });
 
   observer.observe(document, {
@@ -121,6 +107,18 @@ function startObserver() {
   });
 }
 
+const EmptyProfessorObject = {
+  avgDifficulty: -1,
+  avgRating: -1,
+  department: "N/A",
+  firstName: "N/A",
+  id: null,
+  lastName: "N/A",
+  legacyId: -1,
+  numRatings: -1,
+  wouldTakeAgainPercent: -1,
+};
+
 async function fetchProfIDFromName(name) {
   try {
     let response = await sendMessage({
@@ -128,15 +126,15 @@ async function fetchProfIDFromName(name) {
       profName: name,
     });
     let profID = response.data.newSearch.teachers.edges[0].node.id;
-    return profID;
+    return profID ? profID : EmptyProfessorObject;
   } catch (error) {
-    return null;
+    return EmptyProfessorObject;
   }
 }
 
 async function fetchProfReviewFromID(ID) {
   if (ID === null) {
-    return null;
+    return EmptyProfessorObject;
   }
   try {
     let response = await sendMessage({
@@ -144,9 +142,14 @@ async function fetchProfReviewFromID(ID) {
       profID: ID,
     });
     let profData = response.data.node;
-    return profData;
+    // No reviews
+    if (profData && profData.numRatings === 0) {
+      return EmptyProfessorObject;
+    }
+
+    return profData ? profData : EmptyProfessorObject;
   } catch (error) {
-    return null;
+    return EmptyProfessorObject;
   }
 }
 
