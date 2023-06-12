@@ -73,6 +73,10 @@ function startObserver() {
           email: getEmailHref(emailElement),
           rating: parseFloat(profObj.avgRating).toFixed(1),
           isPrimary: isPrimary, // This will be set properly below
+          numRatings: profObj.numRatings,
+          difficulty: parseFloat(profObj.avgDifficulty).toFixed(1),
+          department: profObj.department,
+          wouldTakeAgainPercent: profObj.wouldTakeAgainPercent,
         };
       }
     );
