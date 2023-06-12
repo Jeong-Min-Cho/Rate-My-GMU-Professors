@@ -1,3 +1,5 @@
+import ProfessorPopover from "./ProfessorPopover";
+
 function getRatingColorClass(rating) {
   if (rating >= 5) {
     return "bg-gold-100 shiny";
@@ -17,7 +19,7 @@ function getRatingColorClass(rating) {
 const ProfessorCard = (professor) => {
   console.log("professor", professor);
   return `
-    <li class="py-3 sm:py-4">
+    <li class="py-3 sm:py-4 popover-container">
       <div class="flex items-center space-x-3">
         <div class="relative inline-flex flex-shrink-0">
           <p class="${getRatingColorClass(
@@ -57,6 +59,9 @@ const ProfessorCard = (professor) => {
         }
   
       </div>
+      <div class="popover w-128 h-32 rounded shadow-lg absolute left-full top-0 ml-3 mr-3 mt-3 invisible group-hover:visible"> ${ProfessorPopover(
+        professor
+      )} </div>
     </li>
   `;
 };
