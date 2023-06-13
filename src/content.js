@@ -18,6 +18,10 @@ function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
 
+  // resize the instructor column to fit the new content
+  const thElement = document.querySelector(".instructor-col");
+  thElement.style.width = "300px";
+
   async function processInstructor(currentEmailArray, index, emailArray) {
     if (
       !currentEmailArray ||
@@ -89,7 +93,9 @@ function startObserver() {
     newDiv.id = "ratemygmuprofessors";
     newDiv.innerHTML = ProfessorList(professorObjects);
 
-    currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
+    if (currentEmailArray.parentNode) {
+      currentEmailArray.parentNode.replaceChild(newDiv, currentEmailArray);
+    }
   }
 
   // Setup the observer
