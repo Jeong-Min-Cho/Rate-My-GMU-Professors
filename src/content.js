@@ -57,6 +57,7 @@ async function startObserver() {
         const isPrimary =
           emailElement.nextSibling &&
           emailElement.nextSibling.nodeType === 3 &&
+          emailElement.nextSibling.textContent &&
           emailElement.nextSibling.textContent.includes("(Primary)");
 
         return {
