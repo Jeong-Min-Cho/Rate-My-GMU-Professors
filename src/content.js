@@ -107,6 +107,11 @@ async function fetchProfIDFromName(name) {
       contentScriptQuery: "queryProfID",
       profName: name,
     });
+
+    // if response is null, return empty object
+    if (!response) {
+      return EMPTY_PROFESSOR_OBJECT;
+    }
     const profID = response.data.newSearch.teachers.edges[0].node.id;
     return profID ? profID : EMPTY_PROFESSOR_OBJECT;
   } catch (error) {
