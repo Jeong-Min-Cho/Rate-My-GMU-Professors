@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
-    "default_title": "execute.js will run (watch the Chrome DevTools' console)"
+    "default_title": "Display the ratings of each George Mason University professor for GMU Patriot Web!"
   },
   "background": {
     "service_worker": "dist/background.bundle.js"

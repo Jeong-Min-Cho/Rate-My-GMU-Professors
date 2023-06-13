@@ -1,9 +1,6 @@
 import { AUTHORIZATION_TOKEN } from "../constants/auth.js";
-import { SCHOOL_IDS } from "../constants/school.js";
-import { QueryProfessorID } from "../gql/QueryProfessorID.js";
 import { QueryProfessorData } from "../gql/QueryProfessorData.js";
-
-const API_URL = "https://www.ratemyprofessors.com/graphql";
+import { API_URL } from "../constants/api.js";
 
 async function fetchProfessorData(profID) {
   const response = await fetch(API_URL, {

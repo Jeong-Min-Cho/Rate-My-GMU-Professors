@@ -1,5 +1,4 @@
 import ProfessorPopover from "./ProfessorPopover";
-
 import createRMPHref from "../utils/createRMPHref";
 
 function getRatingColorClass(rating) {
@@ -19,7 +18,6 @@ function getRatingColorClass(rating) {
 }
 
 const ProfessorCard = (professor) => {
-  console.log("professor", professor);
   const ratingColor = getRatingColorClass(professor.rating);
   const isNoData = professor.rating == -1;
 
