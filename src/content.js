@@ -1,7 +1,5 @@
 import checkExecution from "./utils/checkExecution";
-import convertLastNameFirstNameToFirstNameLastName from "./utils/convertLastNameFirstNameToFirstNameLastName.js";
 import ProfessorList from "./components/ProfessorList";
-
 import { EMPTY_PROFESSOR_OBJECT } from "./constants/emptyProfessorObject.js";
 
 // Initial width for the instructor column
@@ -54,7 +52,6 @@ async function startObserver() {
     const professorPromises = Array.from(emailElements).map(
       async (emailElement) => {
         const professorName = emailElement.textContent;
-        console.log("professorName", professorName);
         const profObj = await processName(professorName);
 
         const isPrimary =
