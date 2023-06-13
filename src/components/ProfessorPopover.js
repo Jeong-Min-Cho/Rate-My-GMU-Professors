@@ -1,8 +1,18 @@
+import {
+  GetOverallScoreColor,
+  GetEasyScoreColor,
+  GetDifficultyColor,
+} from "../utils/getScoreColorAndEmoji";
+
 function ConvertDifficultyToPercent(difficulty) {
   return (difficulty / 5) * 100;
 }
 
 const ProfessorPopover = (professor, ratingColor) => {
+  const overallScoreColor = GetOverallScoreColor(professor.rating);
+  const easyScoreColor = GetEasyScoreColor(professor.wouldTakeAgainPercent);
+  const difficultyScoreColor = GetDifficultyColor(professor.difficulty);
+
   return `
   <div class="items-center rounded-lg bg-gray-50 shadow sm:flex">
   <div class="min-w-full border-8 border-green-600 p-5">
@@ -17,7 +27,9 @@ const ProfessorPopover = (professor, ratingColor) => {
   }</p>
 
 
-      <p class="ml-2 font-medium text-gray-900">Excellent</p>
+      <p class="ml-2 font-medium text-gray-900">${overallScoreColor.emoji} ${
+    overallScoreColor.comment
+  }</p>
       <span class="mx-2 h-1 w-1 rounded-full bg-gray-900"></span>
       <p class="text-sm font-medium text-gray-500 hover:underline">${
         professor.numRatings
@@ -27,12 +39,16 @@ const ProfessorPopover = (professor, ratingColor) => {
     <div class="gap-8">
       <div>
         <dl>
-          <dt class="text-sm font-bold text-black">Level of Difficulty</dt>
+          <dt class="text-sm font-bold text-black"> ${
+            difficultyScoreColor.emoji
+          } Level of Difficulty</dt>
           <dd class="mb-3 flex items-center">
             <div class="mr-2 h-2.5 w-full rounded bg-gray-300">
-              <div class="h-2.5 rounded bg-blue-600" style="width: ${ConvertDifficultyToPercent(
-                professor.difficulty
-              )}%"></div>
+              <div class="h-2.5 rounded ${
+                difficultyScoreColor.color
+              }" style="width: ${ConvertDifficultyToPercent(
+    professor.difficulty
+  )}%"></div>
             </div>
             <span class="text-sm font-medium text-black min-w-max">${
               professor.difficulty
@@ -40,12 +56,14 @@ const ProfessorPopover = (professor, ratingColor) => {
           </dd>
         </dl>
         <dl>
-          <dt class="text-sm font-bold text-black">Would take again</dt>
+          <dt class="text-sm font-bold text-black">${
+            easyScoreColor.emoji
+          } Would take again</dt>
           <dd class="mb-3 flex items-center">
             <div class="mr-2 h-2.5 w-full rounded bg-gray-300">
-              <div class="h-2.5 rounded bg-blue-600" style="width: ${
-                professor.wouldTakeAgainPercent
-              }%"></div>
+              <div class="h-2.5 rounded ${
+                easyScoreColor.color
+              }" style="width: ${professor.wouldTakeAgainPercent}%"></div>
             </div>
             <span class="text-sm font-medium text-black min-w-max">${professor.wouldTakeAgainPercent.toFixed(
               0
