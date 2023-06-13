@@ -33,12 +33,7 @@
       "js": ["dist/content.bundle.js"]
     }
   ],
-  "permissions": ["tabs", "scripting", "activeTab", "background"],
-  "host_permissions": [
-    "https://ssbstureg.gmu.edu/StudentRegistrationSsb/ssb/*/*",
-    "https://patriotweb.gmu.edu/pls/prod/bwskfcls.P_GetCrse",
-    "https://www.ratemyprofessors.com/*"
-  ],
+  "host_permissions": ["https://www.ratemyprofessors.com/*"],
   "icons": {
     "16": "./src/img/icon-16x16.png",
     "32": "./src/img/icon-32x32.png",
