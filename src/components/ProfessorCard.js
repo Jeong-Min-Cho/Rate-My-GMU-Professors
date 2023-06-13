@@ -18,8 +18,11 @@ function getRatingColorClass(rating) {
 
 const ProfessorCard = (professor) => {
   console.log("professor", professor);
+  const popoverTop =
+    professor.index === 0 ? "top-0" : `-top-${3 * professor.index}`;
+
   return `
-    <li class="py-3 sm:py-4 popover-container">
+    <li class="py-3 sm:py-4 popover-container relative">
       <div class="flex items-center space-x-3">
         <div class="relative inline-flex flex-shrink-0">
           <p class="${getRatingColorClass(
@@ -59,9 +62,11 @@ const ProfessorCard = (professor) => {
         }
   
       </div>
-      <div class="popover w-128 h-32 rounded shadow-lg absolute left-full top-0 ml-3 mr-3 mt-3 invisible group-hover:visible"> ${ProfessorPopover(
-        professor
-      )} </div>
+      <div id="popover-professor" class="z-50 popover absolute left-full  mt-1/2 ml-3 mr-3 invisible group-hover:visible" style="top:-${
+        1.4 * professor.index
+      }rem">
+      ${ProfessorPopover(professor)}
+    </div>
     </li>
   `;
 };

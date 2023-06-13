@@ -18,7 +18,7 @@ function startObserver() {
   const MutationObserver =
     window.MutationObserver || window.WebKitMutationObserver;
 
-  async function processInstructor(currentEmailArray) {
+  async function processInstructor(currentEmailArray, index, emailArray) {
     if (
       !currentEmailArray ||
       !currentEmailArray.innerText ||
@@ -77,6 +77,7 @@ function startObserver() {
           difficulty: parseFloat(profObj.avgDifficulty).toFixed(1),
           department: profObj.department,
           wouldTakeAgainPercent: profObj.wouldTakeAgainPercent,
+          index: index,
         };
       }
     );
