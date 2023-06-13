@@ -78,6 +78,7 @@ function startObserver() {
           department: profObj.department,
           wouldTakeAgainPercent: profObj.wouldTakeAgainPercent,
           index: index,
+          legacyId: profObj.legacyId,
         };
       }
     );

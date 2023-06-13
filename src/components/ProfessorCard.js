@@ -1,5 +1,7 @@
 import ProfessorPopover from "./ProfessorPopover";
 
+import createRMPHref from "../utils/createRMPHref";
+
 function getRatingColorClass(rating) {
   if (rating >= 5) {
     return "bg-gold-100 shiny";
@@ -26,8 +28,19 @@ const ProfessorCard = (professor) => {
       <div class="flex items-center space-x-3">
         <div class="relative inline-flex flex-shrink-0">
           <p class="${ratingColor} text-sm font-semibold inline-flex items-center p-1.5 rounded ">
-        ${isNoData ? "No Data" : professor.rating}
 
+        ${
+          isNoData
+            ? "No Data"
+            : `
+        <a href="${createRMPHref(
+          professor.legacyId
+        )}" target="_blank" rel="noopener noreferrer" class="hover:underline">
+        ${professor.rating} 
+        </a>
+        `
+        }
+       
         ${
           professor.numRatings <= 5 && professor.rating != -1
             ? `
