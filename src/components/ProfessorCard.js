@@ -1,3 +1,7 @@
+import ProfessorPopover from "./ProfessorPopover";
+
+import createRMPHref from "../utils/createRMPHref";
+
 function getRatingColorClass(rating) {
   if (rating >= 5) {
     return "bg-gold-100 shiny";
@@ -16,15 +20,27 @@ function getRatingColorClass(rating) {
 
 const ProfessorCard = (professor) => {
   console.log("professor", professor);
+  const ratingColor = getRatingColorClass(professor.rating);
+  const isNoData = professor.rating == -1;
+
   return `
-    <li class="py-3 sm:py-4">
+    <li class="py-3 sm:py-4 popover-container relative">
       <div class="flex items-center space-x-3">
         <div class="relative inline-flex flex-shrink-0">
-          <p class="${getRatingColorClass(
-            professor.rating
-          )} text-sm font-semibold inline-flex items-center p-1.5 rounded ">
-        ${professor.rating == -1 ? "No Data" : professor.rating}
+          <p class="${ratingColor} text-sm font-semibold inline-flex items-center p-1.5 rounded ">
 
+        ${
+          isNoData
+            ? "No Data"
+            : `
+        <a href="${createRMPHref(
+          professor.legacyId
+        )}" target="_blank" rel="noopener noreferrer" class="hover:underline">
+        ${professor.rating} 
+        </a>
+        `
+        }
+       
         ${
           professor.numRatings <= 5 && professor.rating != -1
             ? `
@@ -57,6 +73,16 @@ const ProfessorCard = (professor) => {
         }
   
       </div>
+      ${
+        isNoData
+          ? ""
+          : `
+        <div id="popover-professor" class="z-50 popover absolute left-full  t-1/2 ml-3 mr-3 invisible group-hover:visible min-w-full" style="top:-${
+          1.4 * professor.index
+        }rem">
+        ${ProfessorPopover(professor, ratingColor)}
+      </div>`
+      }
     </li>
   `;
 };
