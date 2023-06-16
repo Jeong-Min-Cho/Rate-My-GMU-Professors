@@ -2,10 +2,28 @@ import checkExecution from "./utils/checkExecution";
 import ProfessorList from "./components/ProfessorList";
 import { EMPTY_PROFESSOR_OBJECT } from "./constants/emptyProfessorObject.js";
 
+import detectBrowserName from "./utils/detectBrowserName";
+
+const browserName = detectBrowserName();
 // Initial width for the instructor column
 const INITIAL_COLUMN_WIDTH = "300px";
 
-window.addEventListener("load", () => {
+switch (browserName) {
+  case "Firefox":
+    if (document.readyState === "loading") {
+      window.addEventListener("DOMContentLoaded", startInitialObserver);
+    } else {
+      startInitialObserver();
+    }
+    break;
+  case "Chrome" || "Edge":
+    window.addEventListener("load", startInitialObserver);
+    break;
+  default:
+    break;
+}
+
+function startInitialObserver() {
   const observer = new MutationObserver((mutationsList, observer) => {
     if (document.getElementsByClassName("results-out-of").length > 0) {
       observer.disconnect();
@@ -14,7 +32,7 @@ window.addEventListener("load", () => {
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-});
+}
 
 async function startObserver() {
   // Resize the instructor column to fit the new content
@@ -145,8 +163,17 @@ async function fetchProfReviewFromID(ID) {
 
 function sendMessage(message) {
   return new Promise((resolve) => {
-    chrome.runtime.sendMessage(message, (res) => {
-      resolve(res);
-    });
+    switch (browserName) {
+      case "Firefox":
+        browser.runtime.sendMessage(message, (res) => {
+          resolve(res);
+        });
+        break;
+      case "Chrome" || "Edge":
+        chrome.runtime.sendMessage(message, (res) => {
+          resolve(res);
+        });
+        break;
+    }
   });
 }
