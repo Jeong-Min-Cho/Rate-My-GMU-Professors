@@ -2,7 +2,7 @@
   "name": "Rate My GMU Professors",
   "description": "Display the ratings of each George Mason University professor for GMU Patriot Web!",
   "homepage_url": "https://github.com/Jeong-Min-Cho/Rate-My-GMU-Professors",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "manifest_version": 2,
   "browser_action": {
     "default_title": "Display the ratings of each George Mason University professor for GMU Patriot Web!",
@@ -17,7 +17,8 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "jeongmincho@outlook.com",
-      "strict_min_version": "48.0"
+      "strict_min_version": "48.0",
+      "update_url": "https://rate-my-gmu-professor-web.vercel.app/api/updates"
     }
   },
   "background": {
