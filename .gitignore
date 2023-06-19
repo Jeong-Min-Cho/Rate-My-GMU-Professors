@@ -26,3 +26,7 @@ secrets.*.js
 # distribution
 /dist
 /dist/*
+
+# Production
+/prod
+/prod/*
