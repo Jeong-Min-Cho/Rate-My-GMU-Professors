@@ -8,6 +8,13 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "build": "npx webpack && npx tailwindcss -i ./src/styles.css -o ./dist/styles.css"
+    "build": "npx webpack && npx tailwindcss -i ./src/styles.css -o ./dist/styles.css",
+    "prod-chrome": "npm run build && cp manifest_chrome.json manifest.json && npm run zip-chrome && rm manifest.json && npm run move-zip",
+    "prod-firefox": "npm run build && cp manifest_firefox.json manifest.json && npm run zip-firefox && rm manifest.json && npm run move-zip",
+    "prod-edge": "npm run build && cp manifest_chrome.json manifest.json && npm run zip-edge && rm manifest.json && npm run move-zip",
+    "zip-chrome": "zip -r RateMyGMUProfessors-Chrome.zip ./ -x 'node_modules/*' -x 'manifest_firefox.json' -x 'manifest_chrome.json' -x 'prod/*' -x '.git/*' -x 'package-lock.json'",
+    "zip-firefox": "zip -r RateMyGMUProfessors-Firefox.zip ./ -x 'node_modules/*' -x 'manifest_firefox.json' -x 'manifest_chrome.json' -x 'prod/*' -x '.git/*' -x 'package-lock.json'",
+    "zip-edge": "zip -r RateMyGMUProfessors-Edge.zip ./ -x 'node_modules/*' -x 'manifest_firefox.json' -x 'manifest_chrome.json' -x 'prod/*' -x '.git/*' -x 'package-lock.json'",
+    "move-zip": "mkdir -p ./prod/ && mv RateMyGMUProfessors-*.zip ./prod/"
   }
 }
