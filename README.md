@@ -2,7 +2,7 @@
 
 ![Extension Logo](./src/img/logo.png)
 
-Rate My Professor GMU is a Google Chrome extension that enhances the GMU website by displaying professors' ratings and reviews directly on the Patriot Web interface.
+Rate My GMU Professors is a browser extension that enhances the GMU website by displaying professors' ratings and reviews directly on the Patriot Web interface. It supports Google Chrome, Mozilla Firefox, and Microsoft Edge.
 
 ## Features
 
@@ -13,25 +13,29 @@ Rate My Professor GMU is a Google Chrome extension that enhances the GMU website
 
 ## Installation
 
-### Option 1. From the Chrome Web Store (Recommended)
+### Option 1. From the Web Stores (Recommended)
 
-The extension can be installed from the [Chrome Web Store](https://chrome.google.com/webstore/detail/rate-my-gmu-professors/baadmmacgcbifdhpcghklkcohafjddpc).
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/rate-my-gmu-professors/baadmmacgcbifdhpcghklkcohafjddpc)
+
+- [Firefox](https://addons.mozilla.org/firefox/downloads/file/4127343/rate_my_gmu_professors-2.3.0.xpi)
+
+- [Edge](https://microsoftedge.microsoft.com/addons/detail/rate-my-gmu-professors/mdncocealnblaieehnnpglihhfelkbdj)
 
 ### Option 2. From Source
 
 1. Clone the repository.
 
-2. Open Google Chrome and navigate to chrome://extensions.
+2. Open your browser and navigate to the extensions page (chrome://extensions for Chrome, about:addons for Firefox, edge://extensions for Edge).
 
-3. Enable the Developer mode using the toggle switch in the top right corner.
+3. Enable the Developer mode using the toggle switch in the top right corner (if available).
 
-4. Click on the Load unpacked button and select the cloned repository folder.
+4. Click on the Load unpacked button and select the cloned repository folder (For Firefox, use Debug Add-ons -> Load Temporary Add-on).
 
 5. The extension should now be installed and visible in the extensions list.
 
 ## Usage
 
-1. Open the GMU Patriot Web interface in Google Chrome.
+1. Open the GMU Patriot Web interface in your browser.
 
 2. Log in to your account.
 
@@ -46,10 +50,10 @@ The extension can be installed from the [Chrome Web Store](https://chrome.google
 - [Node.js](https://nodejs.org/en/)
 - [npm](https://www.npmjs.com/)
 - [npx](https://www.npmjs.com/package/npx)
-- [Google Chrome](https://www.google.com/chrome/)
 - [Git](https://git-scm.com/)
 - [Visual Studio Code](https://code.visualstudio.com/) (Recommended)
 - [Prettier](https://prettier.io/) (Recommended)
+- Browser (Chrome, Firefox, Edge)
 
 ### Installation
 
@@ -71,13 +75,24 @@ npm install
 npm run build
 ```
 
+### Production Build
+
+Linux enviroment is recommended.
+There are three build scripts available:
+
+- `npm run prod-chrome` - Builds the extension for Chrome in production mode.
+- `npm run prod-firefox` - Builds the extension for Firefox in production mode.
+- `npm run prod-edge` - Builds the extension for Edge in production mode.
+
+I highly recommend you to build the extension for all three browsers to ensure compatibility.
+
 ### Usage
 
-1. Open Google Chrome and navigate to chrome://extensions.
+1. Open your browser and navigate to the extensions page (chrome://extensions for Chrome, about:addons for Firefox, edge://extensions for Edge).
 
-2. Enable the Developer mode using the toggle switch in the top right corner.
+2. Enable the Developer mode using the toggle switch in the top right corner (if available).
 
-3. Click on the Load unpacked button and select the cloned repository folder.
+3. Click on the Load unpacked button and select the cloned repository folder (For Firefox, use Debug Add-ons -> Load Temporary Add-on).
 
 4. The extension should now be installed and visible in the extensions list.
 
